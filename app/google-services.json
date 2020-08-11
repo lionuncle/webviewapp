@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "970207476718",
+    "firebase_url": "https://fireecams.firebaseio.com",
+    "project_id": "fireecams",
+    "storage_bucket": "fireecams.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970207476718:android:7ea6c301c4073c4b4eecff",
+        "android_client_info": {
+          "package_name": "com.ana.fireecams"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970207476718-r3r5c5nf9j31lfg379d7ghbcj2e1g4od.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ana.fireecams",
+            "certificate_hash": "1d4c35057290e85c8826903de0e68609affbe5e0"
+          }
+        },
+        {
+          "client_id": "970207476718-efb9b9erp2er1tmkplrb6ap2rsgq47ib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpKCwlxomjThpaI6HIB-0Asl_EgRrsKhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970207476718-efb9b9erp2er1tmkplrb6ap2rsgq47ib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
