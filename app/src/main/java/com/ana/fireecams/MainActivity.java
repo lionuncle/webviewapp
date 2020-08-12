@@ -40,10 +40,11 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
 
     private static final String TAG = "INSTALL";
     private WebView webView;
-    private String deviceId,pushToken,kdId;
-    private static String ref= "utm_source=google-play&utm_medium=organic",gaid;
+    private String deviceId, pushToken, kdId;
+    private static String ref = "utm_source=google-play&utm_medium=organic", gaid;
     private String url;
     InstallReferrerClient mReferrerClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +74,9 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         //One signal Your App ID: b837aa87-03d0-41f7-87f7-255870a99c3d
 
         deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        pushToken ="b837aa87-03d0-41f7-87f7-255870a99c3d";
+        pushToken = "b837aa87-03d0-41f7-87f7-255870a99c3d";
 
         kdId = Tracker.getDeviceId();
-
-
-
 
 
         // OneSignal Initialization
@@ -88,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                 .init();
 
 
-
     }
+
     @Override
     public void onInstallReferrerSetupFinished(int responseCode) {
         switch (responseCode) {
@@ -117,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                 Log.w(TAG, "responseCode not found.");
         }
     }
-    private void getGaid(){
+
+    private void getGaid() {
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
 
@@ -130,9 +129,9 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                     e.printStackTrace();
                 }
                 String advertId = null;
-                try{
+                try {
                     advertId = idInfo != null ? idInfo.getId() : null;
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
 
@@ -150,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         task.execute();
     }
 
-    private void ready(){
-        url = "http://fircamernw.club?utm_source=fircamernw_aosapp&device_id="+deviceId+"&push-token="+pushToken+"&kd_id="+kdId+"&ref="+ref+"&gaid="+gaid;
+    private void ready() {
+        url = "http://fircamernw.club?utm_source=fircamernw_aosapp&device_id=" + deviceId + "&push-token=" + pushToken + "&kd_id=" + kdId + "&ref=" + ref + "&gaid=" + gaid;
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -163,18 +162,19 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         settings.setDefaultTextEncodingName("utf-8");
         Uri reveiverIntent = getIntent().getData();
 
-        if (reveiverIntent == null){
+        if (reveiverIntent == null) {
             webView.loadUrl(url);
         }
     }
 
     @Override
     public void onInstallReferrerServiceDisconnected() {
-        Log.d(TAG,"INstallation disconnected");
+        Log.d(TAG, "INstallation disconnected");
     }
+
     @Override
     public void onBackPressed() {
-        if (webView.getUrl().equals("http://fircamernw.club/privacy-policy.html") || webView.getUrl().equals("http://fircamernw.club/terms.html")){
+        if (webView.getUrl().equals("http://fircamernw.club/privacy-policy.html") || webView.getUrl().equals("http://fircamernw.club/terms.html")) {
             MainActivity.super.onBackPressed();
             return;
         }
@@ -183,20 +183,26 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteCache(MainActivity.this);
+
                         MainActivity.super.onBackPressed();
                     }
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
+
+    @Override
+    protected void onDestroy() {
+        deleteCache(MainActivity.this);
+        super.onDestroy();
+    }
+
     public static void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {}
     }
-
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
@@ -207,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
