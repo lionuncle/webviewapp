@@ -13,8 +13,10 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.android.installreferrer.api.InstallReferrerClient;
@@ -53,10 +55,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         try {
             if (reveiverIntent != null) {
                 String openUrl = new URL(reveiverIntent.toString()).toString();
-                if (openUrl != null){
-                    webView.loadUrl(openUrl);
-                    return;
-                }
+                webView.loadUrl(openUrl);
+                return;
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -154,6 +154,13 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         url = "http://fircamernw.club?utm_source=fircamernw_aosapp&device_id="+deviceId+"&push-token="+pushToken+"&kd_id="+kdId+"&ref="+ref+"&gaid="+gaid;
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+        settings.setSupportZoom(true);
+        settings.setDefaultTextEncodingName("utf-8");
         Uri reveiverIntent = getIntent().getData();
 
         if (reveiverIntent == null){
