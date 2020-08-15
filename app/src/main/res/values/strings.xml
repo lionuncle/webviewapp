@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FireeCams</string>
+    <string name="app_name">webviewapp</string>
     <string name="base_url">https://www.example.com</string>
     <string name="kochava_app_GUID">YOUR_KOCHAVA_APP_GUID</string>
     <string name="one_signal_player_id">YOUR_PLAYER_ID</string>
