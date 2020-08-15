@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ana.fireecams">
+    package="com.lionuncle.webviewapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -10,13 +10,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icon_fireecams"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon_fireecams"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"
+        <activity android:name="com.lionuncle.webviewapp.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             >
             <intent-filter android:scheme="http" android:autoVerify="true">
@@ -24,15 +24,14 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="fircamernw.club" />
-                <data android:scheme="http" android:host="www.google.com" />
+                <data android:scheme="http" android:host="www.example.com" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action." />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Splash">
+        <activity android:name="com.lionuncle.webviewapp.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
