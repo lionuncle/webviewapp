@@ -1,4 +1,4 @@
-package com.ana.fireecams;
+package com.lionuncle.webviewapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,18 +6,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
@@ -27,7 +23,6 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.kochava.base.Tracker;
-import com.onesignal.OneSignal;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
 
     private static final String TAG = "INSTALL";
     private WebView webView;
-    private String deviceId, pushToken, kdId;
-    private static String ref = "utm_source=google-play&utm_medium=organic", gaid;
+    private String deviceId, oneSignalPlayerId, kochavaDeviceId;
+    private static String ref = "utm_source=google-play&utm_medium=organic", gaid/*google advertising account id*/;
     private String url;
     InstallReferrerClient mReferrerClient;
 
@@ -64,26 +59,20 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         }
 
         Tracker.configure(new Tracker.Configuration(getApplicationContext())
-                .setAppGuid("kofireecams-tksg")
+                .setAppGuid(getString(R.string.kochava_app_GUID))
         );
 
 
         mReferrerClient = newBuilder(this).build();
         mReferrerClient.startConnection(this);
 
-        //One signal Your App ID: b837aa87-03d0-41f7-87f7-255870a99c3d
 
         deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        pushToken = "b837aa87-03d0-41f7-87f7-255870a99c3d";
+        oneSignalPlayerId = getString(R.string.one_signal_player_id);
 
-        kdId = Tracker.getDeviceId();
+        kochavaDeviceId = Tracker.getDeviceId();
 
 
-        // OneSignal Initialization
-        OneSignal.startInit(this)
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init();
 
 
     }
@@ -95,10 +84,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                 try {
                     Log.v(TAG, "InstallReferrer conneceted");
                     ReferrerDetails response = mReferrerClient.getInstallReferrer();
-                    //handleReferrer(response);
                     ref = response.getInstallReferrer();
                     ready();
-
                     mReferrerClient.endConnection();
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -142,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
             protected void onPostExecute(String advertId) {
                 gaid = advertId;
                 ready();
-                //Toast.makeText(getApplicationContext(), advertId, Toast.LENGTH_SHORT).show();
             }
 
         };
@@ -150,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
     }
 
     private void ready() {
-        url = "http://fircamernw.club?utm_source=fircamernw_aosapp&device_id=" + deviceId + "&push-token=" + pushToken + "&kd_id=" + kdId + "&ref=" + ref + "&gaid=" + gaid;
+        url = getString(R.string.base_url)+"&device_id=" + deviceId + "&push-token=" + oneSignalPlayerId + "&kd_id=" + kochavaDeviceId + "&ref=" + ref + "&gaid=" + gaid;
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -174,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
 
     @Override
     public void onBackPressed() {
-        if (webView.getUrl().equals("http://fircamernw.club/privacy-policy.html") || webView.getUrl().equals("http://fircamernw.club/terms.html")) {
-            MainActivity.super.onBackPressed();
-            return;
-        }
         new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
@@ -194,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
     @Override
     protected void onDestroy() {
         deleteCache(MainActivity.this);
+        //clearing Cache everytime app closes
         super.onDestroy();
     }
 
